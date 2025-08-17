@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ResponderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +17,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/invitation', function () {
+    return view('invitation');
+});
+
+Route::post('/submit', [ResponderController::class, 'submit'])->name('submit');
+// Route::post('/submit-rsvp', [ResponderController::class, 'submit'])->name('submit');
+

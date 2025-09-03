@@ -23,9 +23,16 @@ class ResponderController extends Controller
             return back()->with('error', 'You have already submitted an RSVP or name has already used.');
         }
 
+        // dd($request->all());
+
+        // Kalau number_of_guests == "2", ambil dari family_off_count
+        $numberOfGuests = $request->number_of_guests === "2"
+            ? $request->family_off_count
+            : 2;
+
         Responder::create([
             'full_name' => $request->full_name,
-            'number_of_guests' => $request->number_of_guests,
+            'number_of_guests' => $numberOfGuests,
             'phone' => $request->phone,
             'is_attending' => $request->is_attending,
             'is_active' => '1',

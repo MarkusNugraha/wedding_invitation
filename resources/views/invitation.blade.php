@@ -10,68 +10,19 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     {{-- CSS --}}
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    {{-- Google Fonts --}}
-    {{-- <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet"> --}}
-
+    {{-- Font Awesome --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 </head>
 <body>
-    {{-- @if (session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
-
-    @if (session('error'))
-        <div class="alert alert-danger">{{ session('error') }}</div>
-    @endif --}}
-
-    {{-- <div>
-        <img src="{{ asset('images/image1.jpg') }}" alt="Foto Pasangan" class="img-fluid">
-        <h1 class="judul-nama">JO & Michael</h1>
-    </div> --}}
-
-    {{-- <div class="position-relative text-center">
-        <img src="{{ asset('images/image1(edited).jpg') }}" class="img-fluid" alt="Foto Pasangan">
-
-        <div class="position-absolute top-50 start-50 translate-middle">
-            <h5 class="font title1">OUR WEDDING DAY</h5>
-            <h1 class="font title2 mt-4">JO & Michael</h1>
-        </div>
-
-        <div class="quote-section position-relative text-center text-primary py-5">
-            <div class="container">
-                <img src="{{ asset('images/rings-icon.png') }}" alt="Rings Icon" style="width: 80px;">
-                <p class="fs-5 mt-3 mb-1">"I have found the one whom my soul loves."</p>
-                <p class="fw-bold">- Song of Solomon 3:4 -</p>
-            </div>
-        </div>
-
-    </div> --}}
-
-    {{-- <div class="position-relative text-center">
-        <img src="{{ asset('images/image1.jpg') }}" class="img-fluid w-100" alt="Foto Pasangan">
-
-        <!-- Overlay gelap -->
-        <div class="position-absolute top-0 start-0 w-100 h-100" style="background-color: rgba(0,0,0,0.4);"></div>
-
-        <!-- Teks di atas gambar -->
-        <div class="overlay-text position-absolute top-50 start-50 translate-middle">
-            <h1 class="judul-nama">JO & Michael</h1>
-        </div>
-    </div> --}}
-
-    {{-- <audio controls autoplay muted loop id="bgMusic">
-        <source src="{{ asset('music/Justin Bieber - GO BABY.mp3') }}" type="audio/mpeg">
-        <source src="{{ asset('music/Justin Bieber - GO BABY.mp3') }}" type="audio/ogg">
-        Your browser does not support the audio element.
-    </audio>
-
-    <button onclick="toggleMusic()">Play / Pause</button> --}}
-
-
     <audio autoplay id="bgMusic" loop>
         {{-- <source src="{{ asset('music/Ed Sheeran - Perfect.mp3') }}" type="audio/mpeg"> --}}
-        <source src="{{ asset('music/Justin Bieber - GO BABY.mp3') }}" type="audio/mpeg">
+        {{-- <source src="{{ asset('music/Justin Bieber - GO BABY.mp3') }}" type="audio/mpeg"> --}}
+
+        {{-- <source src="{{ asset('music/John Legend - All of Me.mp3') }}" type="audio/mpeg"> --}}
+        {{-- <source src="{{ asset('music/Westlife -  Beautiful in white.mp3') }}" type="audio/mpeg"> --}}
+        <source src="{{ asset('music/Calum Scott - You Are The Reason.mp3') }}" type="audio/mpeg">
+
         Your browser does not support the audio element.
     </audio>
 
@@ -88,7 +39,7 @@
         {{-- Title --}}
         <div class="position-absolute top-50 start-50 translate-middle animate-on-scroll fade-in">
             <div class="font-noto-sans title1">OUR WEDDING DAY</div>
-            <div class="font-noto-sans title2 mt-4">JO & Michael</div>
+            <div class="font-noto-sans title2 mt-4">Michael & Yohana</div>
         </div>
     </div>
 
@@ -97,22 +48,22 @@
     <div class="position-relative">
         <img src="{{ asset('images/bunga-kiri.png') }}" class="flower flower-left" alt="Bunga Kiri" class="bunga-kiri">
 
-        <div class="container col-7 animate-on-scroll slide-in-left">
-            <div class="font-noto-sans groom-name">JO</div>
+        <div class="container col-7 text-end animate-on-scroll slide-in-right">
+            <div class="font-noto-sans groom-name">Michael Cahyadi Kuslin</div>
             <div class="font-playfair-display groom-name-detail">The first child of</div>
-            <div class="font-playfair-display groom-name-detail">Mr. JO's father &</div>
-            <div class="font-playfair-display groom-name-detail">Mrs. JO's mother</div>
+            <div class="font-playfair-display groom-name-detail">Mr. Yohanes Antony Koesno Kuslin</div>
+            <div class="font-playfair-display groom-name-detail">& Mrs. Lie Fee Ling</div>
         </div>
 
-        <div class="py-2 text-center">
+        <div class="py-5 text-center">
             <div class="font-euphoria-script">&</div>
         </div>
 
-        <div class="container col-7 text-end animate-on-scroll slide-in-right">
-            <div class="font-noto-sans groom-name">Michael</div>
+        <div class="container col-7 animate-on-scroll slide-in-left">
+            <div class="font-noto-sans groom-name">Yohana Alvania Sembodo</div>
             <div class="font-playfair-display groom-name-detail">The first child of</div>
-            <div class="font-playfair-display groom-name-detail">Mr. Michael's father</div>
-            <div class="font-playfair-display groom-name-detail">& Mrs. Michael's mother</div>
+            <div class="font-playfair-display groom-name-detail">Mr. Gatot Sembodo &</div>
+            <div class="font-playfair-display groom-name-detail">Mrs. Tio Lie Tju</div>
         </div>
 
         <img src="{{ asset('images/bunga-kanan.png') }}" class="flower flower-right" alt="Bunga Kanan" class="bunga-kanan">
@@ -125,14 +76,30 @@
     <div class="py-5"></div>
 
     <div class="text-center animate-on-scroll slide-in-top">
-        <div class="font-noto-sans date-title pb-4">Date & Time</div>
-        <div class="font-playfair-display date fw-bold">Saturday, 6th Sept 2025</div>
-        <div class="font-playfair-display date">10:00 AM</div>
+        <div class="font-noto-sans date-title pb-4">Holy Matrimony</div>
+        <div class="font-playfair-display date fw-bold">Saturday, 8 November 2025</div>
+        <div class="font-playfair-display date">10:00 - 11:00 WIB</div>
+        <div class="font-playfair-display date">Gereja Santo Yosafat</div>
+        <div class="font-playfair-display date">Jl. Kri Yos Sudarso, Medokan Semampir, Kec. Sukolilo, Surabaya, Jawa Timur 60119</div>
+
+        <a class="btn btn-secondary my-5" href="https://share.google/C0fiQchs2mZqEhJ7S" target="_blank">View Location</a>
     </div>
 
     <div class="py-5"></div>
 
     <div class="text-center animate-on-scroll slide-in-top">
+        <div class="font-noto-sans date-title pb-4">Reception</div>
+        <div class="font-playfair-display date fw-bold">Saturday, 8 November 2025</div>
+        <div class="font-playfair-display date">18:00 - selesai</div>
+        <div class="font-playfair-display date">Tristar Restaurant Surabaya</div>
+        <div class="font-playfair-display date">Jl. Ps. Besar Wetan No.20, Alun-alun Contong, Kec. Bubutan, Surabaya, Jawa Timur 60174</div>
+
+        <a class="btn btn-secondary my-5" href="https://share.google/vqqLvoPEl17KlnE48" target="_blank">View Location</a>
+    </div>
+
+    <div class="py-5"></div>
+
+    {{-- <div class="text-center animate-on-scroll slide-in-top">
         <div class="font-noto-sans location-title pb-4">Location</div>
         <div class="mapouter mx-auto d-block mb-4">
             <div class="gmap_canvas">
@@ -141,22 +108,6 @@
                     scrolling="no" marginheight="0" marginwidth="0">
                 </iframe>
                 <a href="https://online-timer.me/">online timer</a><br><a href="https://www.alarm-clock.net/"></a><br>
-                {{-- <style>
-                    .mapouter {
-                        position: relative;
-                        text-align: right;
-                        height: 500px;
-                        width: 500px;
-                    }
-                </style><a href="https://www.mapembed.net">google map net</a>
-                <style>
-                    .gmap_canvas {
-                        overflow: hidden;
-                        background: none !important;
-                        height: 500px;
-                        width: 500px;
-                    }
-                </style> --}}
             </div>
         </div>
         <div class="font-playfair-display location fw-bold">Tristar Restaurant Surabaya</div>
@@ -166,14 +117,28 @@
         <a class="btn btn-secondary my-5" href="https://maps.app.goo.gl/QL8vf38W6QNEk8858" target="_blank">View Location</a>
     </div>
 
-    <div class="py-5"></div>
+    <div class="py-5"></div> --}}
 
     {{-- <div class="text-center animate-on-scroll slide-in-top">
         <div class="font-noto-sans dresscode-title pb-4">Dress Code</div>
         <div class="font-playfair-display dresscode fw-bold">Batik Attire</div>
         <div class="font-playfair-display dresscode">Black Trouser / Skirt</div>
         <div class="font-playfair-display dresscode">Formal Shoes</div>
-    </div> --}}
+    </div>
+
+    <div class="py-5"></div> --}}
+
+    <div class="text-center card w-50 mx-auto p-4 bg-light animate-on-scroll slide-in-bottom">
+        <div class="font-noto-sans virtual-blessings-title pb-4">Virtual Blessings</div>
+        <div class="font-playfair-display virtual-blessings">
+            Your generosity and thoughtfulness mean everything to us.
+            Thanks for celebrating our special day!
+        </div>
+
+        <a class="btn btn-secondary w-25 mx-auto mt-5 mb-3" data-bs-toggle="modal" data-bs-target="#sendGiftModal">
+            Send Gift
+        </a>
+    </div>
 
     <div class="py-5"></div>
 
@@ -208,11 +173,18 @@
             <div id="optional-fields" style="display: none;">
                 <!-- Number of Guests -->
                 <div class="mb-4">
-                    <label for="number_of_guests" class="font-playfair-display rsvp fw-bold mb-2">Number of Guest(s)</label>
+                    <label for="number_of_guests" class="font-playfair-display rsvp fw-bold mb-2">Number of Guests</label>
                     <select class="form-select" id="number_of_guests" name="number_of_guests" required>
-                        <option value="1" selected>1 Guest</option>
-                        <option value="2">2 Guests</option>
+                        <option value="1" selected>2 Guest</option>
+                        <option value="2">Family Off</option>
                     </select>
+                </div>
+
+                <!-- Family Off Input -->
+                <div class="mb-4" id="family-off-wrapper">
+                    <label for="family_off_count" class="font-playfair-display rsvp fw-bold mb-2">Family Member Count</label>
+                    <input type="number" class="form-control" id="family_off_count" name="family_off_count" min="1"
+                        placeholder="Masukkan jumlah keluarga">
                 </div>
 
                 <!-- Phone Number -->
@@ -231,7 +203,7 @@
 
     <div class="py-5"></div>
 
-    <!-- Modal -->
+    <!-- Modal Success / Error Submit RSVP -->
     <div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel"
         aria-hidden="true">
         <div class="modal-dialog">
@@ -255,6 +227,54 @@
         </div>
     </div>
 
+    <!-- Modal Send Gift -->
+    <div class="modal fade" id="sendGiftModal" tabindex="-1" aria-labelledby="sendGiftModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <!-- Header -->
+                <div class="modal-header justify-content-center">
+                    <h5 class="modal-title text-center" id="sendGiftModalLabel">Virtual Blessings</h5>
+                    <button type="button" class="btn-close position-absolute end-0 me-3" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+
+                <!-- Body -->
+                <div class="modal-body text-center">
+                    <ul class="list-unstyled">
+
+                        <!-- Item 1 -->
+                        <li class="mb-3">
+                            <div class="d-flex justify-content-center">
+                                <img src="images/bca-logo.png" alt="BCA Logo" class="img-fluid my-2"
+                                    style="max-width:120px;">
+                            </div>
+                            <strong>a.n. Yohana Alvania Sembodo</strong><br>
+                            <strong id="rek1">1234567890</strong>
+                            <button class="btn btn-sm btn-outline-primary ms-2"
+                                onclick="copyToClipboard('rek1')">Copy</button>
+                        </li>
+
+                        <!-- Item 2 -->
+                        <li class="mb-3">
+                            <div class="d-flex justify-content-center">
+                                <img src="images/bca-logo.png" alt="BCA Logo" class="img-fluid my-2"
+                                    style="max-width:120px;">
+                            </div>
+                            <strong>a.n. Michael Cahyadi Kuslin</strong><br>
+                            <strong id="rek2">0987654321</strong>
+                            <button class="btn btn-sm btn-outline-primary ms-2"
+                                onclick="copyToClipboard('rek2')">Copy</button>
+                        </li>
+
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
 
     {{-- Bootstrap JS Bundle (dengan Popper) --}}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -276,15 +296,37 @@
             const noRadio = document.getElementById('no');
             const optionalFields = document.getElementById('optional-fields');
 
+            const guestSelect = document.getElementById('number_of_guests');
+            const familyOffWrapper = document.getElementById('family-off-wrapper');
+            const familyOffInput = document.getElementById('family_off_count');
+
             function toggleOptionalFields() {
                 if (yesRadio.checked) {
                     optionalFields.style.display = 'block';
                     optionalFields.querySelectorAll('select, input').forEach(el => el.required = true);
+
+                    toggleFamilyOff();
                 } else {
                     optionalFields.style.display = 'none';
                     optionalFields.querySelectorAll('select, input').forEach(el => el.required = false);
+                    familyOffWrapper.style.display = 'none';
+                    familyOffInput.required = false;
                 }
             }
+
+            function toggleFamilyOff() {
+                if (guestSelect.value === '2') {
+                    familyOffWrapper.style.display = 'block';
+                    familyOffInput.required = true;
+                } else {
+                    familyOffWrapper.style.display = 'none';
+                    familyOffInput.required = false;
+                }
+            }
+
+            guestSelect.addEventListener('change', function () {
+                toggleFamilyOff();
+            });
 
             yesRadio.addEventListener('change', toggleOptionalFields);
             noRadio.addEventListener('change', toggleOptionalFields);
@@ -326,6 +368,11 @@
                 musicIcon.classList.remove('fa-volume-high');
                 musicIcon.classList.add('fa-volume-xmark');
             }
+        }
+
+        function copyToClipboard(elementId) {
+            const text = document.getElementById(elementId).innerText;
+            navigator.clipboard.writeText(text);
         }
     </script>
 </body>

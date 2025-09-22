@@ -21,8 +21,11 @@ class ResponderController extends Controller
         $existing = Responder::where('full_name', $request->full_name)->first();
         if ($existing) {
             return back()->with('error', 'You have already submitted an RSVP or name has already used.');
+            // return response()->json([
+            //     'success' => false,
+            //     'message' => 'You have already submitted an RSVP or name has already been used.'
+            // ], 422);
         }
-
         // dd($request->all());
 
         // Kalau number_of_guests == "2", ambil dari family_off_count
@@ -31,6 +34,7 @@ class ResponderController extends Controller
             : 2;
 
         Responder::create([
+        // $responder = Responder::create([
             'full_name' => $request->full_name,
             'number_of_guests' => $numberOfGuests,
             'phone' => $request->phone,
@@ -39,5 +43,10 @@ class ResponderController extends Controller
         ]);
 
         return back()->with('success', 'Thank you for your RSVP!');
+        // return response()->json([
+        //     'success'   => true,
+        //     'message'   => 'Thank you for your RSVP!',
+        //     'responder'=> $responder
+        // ]);
     }
 }

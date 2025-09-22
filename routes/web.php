@@ -1,7 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\ResponderController;
+use App\Http\Controllers\WishesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,14 +16,21 @@ use App\Http\Controllers\ResponderController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('invitation');
+//     // return view('welcome');
+// });
 
-Route::get('/invitation', function () {
-    return view('invitation');
-});
+// Route::get('/invitation', function () {
+//     return view('invitation');
+// });
 
-Route::post('/submit', [ResponderController::class, 'submit'])->name('submit');
-// Route::post('/submit-rsvp', [ResponderController::class, 'submit'])->name('submit');
+Route::get('/', [InvitationController::class, 'index'])->name('invitation.index');
+Route::get('/invitation', [InvitationController::class, 'index']);
+Route::get('/invitation/to/{id}', [InvitationController::class, 'show']);
+
+
+
+Route::post('/submit-rsvp', [ResponderController::class, 'submit'])->name('submit-rsvp');
+Route::post('/submit-wishes', [WishesController::class, 'submit'])->name('submit-wishes');
 

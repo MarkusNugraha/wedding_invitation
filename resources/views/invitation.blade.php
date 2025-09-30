@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>The Wedding of Michael & Yohana</title>
 
     {{-- Bootstrap --}}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -131,8 +131,8 @@
         <div class="py-5"></div>
 
         <div class="col-7 p-4 bg-light rounded shadow-sm animate-on-scroll slide-in-left" style="max-width: 500px; margin: auto;">
-            <form action="{{ route('submit-rsvp') }}" method="POST">
-            {{-- <form id="rsvpForm" action="{{ route('submit-rsvp') }}" method="POST"> --}}
+            {{-- <form action="{{ route('submit-rsvp') }}" method="POST"> --}}
+            <form id="rsvpForm" action="{{ isset($responder) ? route('submit-rsvp') : route('submitnew-rsvp') }}" method="POST">
                 @csrf
                 <div class="font-noto-sans rsvp-title text-center">RSVP</div>
 
@@ -140,13 +140,17 @@
                 <div class="mt-3">
                     <label class="font-playfair-display rsvp fw-bold mb-2">Will you attend ?</label>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="is_attending" id="yes" value="1" required>
+                        <input class="form-check-input" type="radio" name="is_attending" id="yes" value="1"
+                            @if(isset($responder) && $responder->is_attending == 1) checked @endif
+                            @if(isset($responder) && $responder->is_attending != null) disabled @endif required>
                         <label class="form-check-label font-noto-sans" for="yes">
                             Yes, I will attend
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="is_attending" id="no" value="0" required>
+                        <input class="form-check-input" type="radio" name="is_attending" id="no" value="0"
+                            @if(isset($responder) && $responder->is_attending == 0) checked @endif
+                            @if(isset($responder) && $responder->is_attending != null) disabled @endif required>
                         <label class="form-check-label font-noto-sans" for="no">
                             I'd love to, but I can't
                         </label>
@@ -157,16 +161,16 @@
                 <div class="my-5">
                     <label for="full_name" class="font-playfair-display rsvp fw-bold mb-2">Full Name</label>
                     <input type="text" class="form-control" id="full_name" name="full_name" placeholder="Your full name"
-                    value="{{ $responder->full_name ?? '' }}" @if(isset($responder)) disabled @endif required>
+                    value="{{ $responder->full_name ?? '' }}" @if(isset($responder) && $responder->full_name != null) readonly @endif required>
                 </div>
 
-                <div id="optional-fields" style="display: none;">
+                <div id="optional-fields" style="@if(isset($responder) && $responder->is_attending == 1) display:block; @else display:none; @endif">
                     <!-- Number of Guests -->
                     <div class="mb-4">
                         <label for="number_of_guests" class="font-playfair-display rsvp fw-bold mb-2">Number of Guests</label>
-                        <select class="form-select" id="number_of_guests" name="number_of_guests" required>
-                            <option value="1" selected>2 Guest</option>
-                            <option value="2">Family Off</option>
+                        <select class="form-select" id="number_of_guests" name="number_of_guests" @if(isset($responder) && $responder->number_of_guests != null) readonly @endif required>
+                            <option value="1" @if(isset($responder) && $responder->number_of_guests == 2) selected @endif selected>2 Guest</option>
+                            <option value="2" @if(isset($responder) && $responder->number_of_guests != 2) selected @endif>Family Off</option>
                         </select>
                     </div>
 
@@ -174,19 +178,25 @@
                     <div class="mb-4" id="family-off-wrapper">
                         <label for="family_off_count" class="font-playfair-display rsvp fw-bold mb-2">Family Member Count</label>
                         <input type="number" class="form-control" id="family_off_count" name="family_off_count" min="1"
-                            placeholder="Masukkan jumlah keluarga">
+                            placeholder="Masukkan jumlah keluarga" @if(isset($responder) && $responder->number_of_guests != null) value="{{ $responder->number_of_guests }}" readonly @endif>
                     </div>
 
                     <!-- Phone Number -->
                     <div class="mb-5">
                         <label for="phone" class="font-playfair-display rsvp fw-bold mb-2">Phone Number</label>
-                        <input type="tel" class="form-control" id="phone" name="phone" placeholder="+62123456" required>
+                        <input type="tel" class="form-control" id="phone" name="phone" placeholder="+62123456" value="{{ $responder->phone ?? '' }}"
+                            @if(isset($responder) && $responder->phone != null) readonly @endif required>
                     </div>
                 </div>
 
+                {{-- Set Responder ID --}}
+                @if(isset($responder))
+                    <input type="hidden" name="responder_id" value="{{ $responder->id }}">
+                @endif
+
                 <!-- Submit -->
                 <div class="d-flex justify-content-center">
-                    <button type="submit" class="btn-custom">Submit</button>
+                    <button type="submit" class="btn-custom" id="rsvpSubmitBtn" @if(isset($responder) && $responder->is_attending != null) disabled @endif>Submit</button>
                 </div>
             </form>
         </div>
@@ -221,28 +231,6 @@
         <div class="py-5"></div>
 
         <!-- Modal Success / Error Submit RSVP -->
-        {{-- <div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header
-                @if (session('success')) bg-success text-white
-                @elseif (session('error')) bg-danger text-white
-                @endif">
-                        <h5 class="modal-title" id="notificationModalLabel">
-                            {{ session('success') ? 'Success' : 'Error' }}
-                        </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        {{ session('success') ?? session('error') }}
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                    </div>
-                </div>
-            </div>
-        </div> --}}
         <div class="modal fade" id="notificationModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -317,8 +305,8 @@
 
                     <!-- Body -->
                     <div class="modal-body">
-                        <form action="{{ route('submit-wishes') }}" method="POST">
-                        {{-- <form id="wishForm" action="{{ route('submit-wishes') }}" method="POST"> --}}
+                        {{-- <form action="{{ route('submit-wishes') }}" method="POST"> --}}
+                        <form id="wishForm" action="{{ route('submit-wishes') }}" method="POST">
                             @csrf
                             <!-- Nama -->
                             <div class="mb-3">
@@ -348,14 +336,14 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     {{-- Modal Session --}}
-    @if (session('success') || session('error'))
+    {{-- @if (session('success') || session('error'))
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 var modal = new bootstrap.Modal(document.getElementById('notificationModal'));
                 modal.show();
             });
         </script>
-    @endif
+    @endif --}}
 
     <script>
         // Toggle optional fields
@@ -458,6 +446,10 @@
             navigator.clipboard.writeText(text);
         }
 
+        @if(isset($responder->number_of_guests))
+            readonlyDropdown();
+        @endif
+
         // Show Notification Modal
         function showNotification(success, message) {
             const title = document.getElementById("notificationTitle");
@@ -494,17 +486,34 @@
                     },
                     body: formData
                 })
-                    .then(res => res.json())
+                    // .then(res => res.json())
+                    .then(async (res) => {
+                        const contentType = res.headers.get("content-type");
+                        if (contentType && contentType.includes("application/json")) {
+                            return res.json();
+                        } else {
+                            throw new Error("Invalid response (not JSON)");
+                        }
+                    })
                     .then(data => {
-                        // if (data.success) {
-                        //     alert("✅ RSVP submitted successfully!");
-                        //     rsvpForm.reset();
-                        // } else {
-                        //     alert("❌ Failed to submit RSVP!");
-                        // }
-                        showNotification(data.success, data.message);
+                        let messageText = "";
+                        // Kalau pesan error >1 , dijadikan 1 string
+                        if (!data.success && typeof data.message === "object") {
+                            let errors = [];
+                            for (let field in data.message) {
+                                if (data.message.hasOwnProperty(field)) {
+                                    errors.push(...data.message[field]);
+                                }
+                            }
+                            messageText = errors.join("\n");
+                        } else {
+                            messageText = data.message;
+                        }
+                        showNotification(data.success, messageText);
 
-                        if (data.success) {
+                        if (data.success && data.status === 'update') {
+                            disableRsvpForm(data.responder);
+                        } else if (data.success && data.status === 'create') {
                             resetRsvpForm();
                         }
                     })
@@ -552,7 +561,6 @@
                             let modal = bootstrap.Modal.getInstance(document.getElementById("sendWishesModal"));
                             modal.hide();
                     } else {
-                        // alert("❌ Failed to submit wish!");
                         showNotification(false, "Unexpected error: " + err);
                     }
                 })
@@ -570,6 +578,84 @@
             document.getElementById("family-off-wrapper").style.display = "none";
         }
 
+        function disableRsvpForm(responderData) {
+            const rsvpForm = document.getElementById("rsvpForm");
+            if (!rsvpForm) return;
+
+            rsvpForm.reset();
+
+            // Default sembunyikan field opsional
+            document.getElementById("optional-fields").style.display = "none";
+            document.getElementById("family-off-wrapper").style.display = "none";
+
+            if (responderData) {
+                const select = document.getElementById("number_of_guests");
+                const familyOffWrapper = document.getElementById("family-off-wrapper");
+                const familyOffInput = document.getElementById("family_off_count");
+
+                if (responderData.is_attending) {
+                    if (responderData.is_attending == 1) {
+                        document.getElementById("yes").checked = true;
+                        document.getElementById("yes").disabled = true;
+                        document.getElementById("no").disabled = true;
+
+                        if (responderData.number_of_guests) {
+                            // Set number of guests
+                            if (parseInt(responderData.number_of_guests) === 2) {
+                                select.value = "1";
+                                familyOffWrapper.style.display = "none";
+                            } else {
+                                select.value = "2";
+                                familyOffWrapper.style.display = "block";
+                                familyOffInput.value = responderData.number_of_guests;
+                                familyOffInput.readonly = true;
+                            }
+
+                            document.getElementById("optional-fields").style.display = "block";
+
+                            // Set phone
+                            if (responderData.phone) {
+                                document.getElementById("phone").value = responderData.phone;
+                                document.getElementById("optional-fields").style.display = "block";
+                            }
+                        }
+                    } else if (responderData.is_attending == 0) {
+                        document.getElementById("no").checked = true;
+                        document.getElementById("yes").disabled = true;
+                        document.getElementById("no").disabled = true;
+
+                        // Jika tidak hadir, tidak perlu menampilkan optional fields
+                    }
+                }
+
+                // Readonly full name
+                if (responderData.full_name) {
+                    document.getElementById("full_name").value = responderData.full_name;
+                    document.getElementById("full_name").readonly = true;
+                }
+
+                // Readonly dropdown
+                select.setAttribute("readonly", true);
+                familyOffInput.setAttribute("readonly", true);
+                readonlyDropdown();
+
+                // Disable submit button
+                const submitButton = document.getElementById("rsvpSubmitBtn");
+                if (submitButton) {
+                    submitButton.disabled = true;
+                }
+            }
+        }
+
+        // Readonly dropdown
+        function readonlyDropdown() {
+            const dropdown = document.getElementById("number_of_guests");
+            dropdown.addEventListener("mousedown", function (e) {
+                if (this.hasAttribute("readonly")) {
+                    e.preventDefault();
+                }
+            });
+        }
     </script>
 </body>
 </html>

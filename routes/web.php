@@ -32,5 +32,6 @@ Route::get('/invitation/to/{id}', [InvitationController::class, 'show']);
 
 
 Route::post('/submit-rsvp', [ResponderController::class, 'submit'])->name('submit-rsvp');
+Route::post('/submitnew-rsvp', [ResponderController::class, 'submitnew'])->name('submitnew-rsvp');
 Route::post('/submit-wishes', [WishesController::class, 'submit'])->name('submit-wishes');
 

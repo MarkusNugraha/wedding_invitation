@@ -86,12 +86,19 @@ body {
     color: #ffffff;
 }
 
+.btn-custom:disabled {
+    background-color: #ccc;
+    color: #666;
+    cursor: not-allowed;
+    border: none;
+    opacity: 0.7;
+}
+
+
 .wishes-list {
     max-height: 300px;
-    /* atur sesuai kebutuhan */
     overflow-y: auto;
     scrollbar-width: thin;
-    /* Firefox */
 }
 
 .wishes-list::-webkit-scrollbar {
@@ -124,6 +131,10 @@ body {
 .cover.hidden {
     opacity: 0;
     visibility: hidden;
+}
+
+.notificationModal {
+    z-index: 1000;
 }
 
 /* Animation */

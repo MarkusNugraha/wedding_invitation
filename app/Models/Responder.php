@@ -12,7 +12,10 @@ class Responder extends Model
     protected $table = 'responders';
 
     protected $fillable = [
+        'uuid',
         'full_name',
+        'custom_number_guest',
+        'max_guest_number',
         'number_of_guests',
         'phone',
         'is_attending',

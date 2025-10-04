@@ -5,15 +5,28 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Wishes;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class WishesController extends Controller
 {
     public function submit(Request $request)
     {
-        $request->validate([
+        // $request->validate([
+        //     'wish_name'    => 'required|string|max:255',
+        //     'wish_message' => 'required|string|max:1000',
+        // ]);
+
+        $validator = Validator::make($request->all(), [
             'wish_name'    => 'required|string|max:255',
             'wish_message' => 'required|string|max:1000',
         ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors()
+            ], 422);
+        }
 
         // Wishes::create([
         $wish = Wishes::create([

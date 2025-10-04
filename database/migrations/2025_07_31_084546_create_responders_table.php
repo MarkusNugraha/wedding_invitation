@@ -13,10 +13,13 @@ return new class extends Migration
     {
         Schema::create('responders', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid')->unique();
             $table->string('full_name');
+            $table->string('custom_number_guest');
+            $table->string('max_guest_number')->nullable();
             $table->string('number_of_guests')->nullable();
             $table->string('phone')->nullable();
-            $table->string('is_attending');
+            $table->string('is_attending')->nullable();
             $table->string('is_active');
             $table->timestamps();
         });

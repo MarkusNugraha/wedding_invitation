@@ -131,7 +131,6 @@
         <div class="py-5"></div>
 
         <div class="col-7 p-4 bg-light rounded shadow-sm animate-on-scroll slide-in-left" style="max-width: 500px; margin: auto;">
-            {{-- <form action="{{ route('submit-rsvp') }}" method="POST"> --}}
             <form id="rsvpForm" action="{{ isset($responder) ? route('submit-rsvp') : route('submitnew-rsvp') }}" method="POST">
                 @csrf
                 <div class="font-noto-sans rsvp-title text-center">RSVP</div>
@@ -166,19 +165,63 @@
 
                 <div id="optional-fields" style="@if(isset($responder) && $responder->is_attending == 1) display:block; @else display:none; @endif">
                     <!-- Number of Guests -->
-                    <div class="mb-4">
+                    {{-- <div class="mb-4">
                         <label for="number_of_guests" class="font-playfair-display rsvp fw-bold mb-2">Number of Guests</label>
                         <select class="form-select" id="number_of_guests" name="number_of_guests" @if(isset($responder) && $responder->number_of_guests != null) readonly @endif required>
-                            <option value="1" @if(isset($responder) && $responder->number_of_guests == 2) selected @endif selected>2 Guest</option>
-                            <option value="2" @if(isset($responder) && $responder->number_of_guests != 2) selected @endif>Family Off</option>
+                            <option value="1"
+                                @if(isset($responder) && $responder->number_of_guests == 2) selected @endif selected
+                                @if(isset($responder) && $responder->custom_number_guest == 0) selected @endif
+                            >
+                                2 Guest
+                            </option>
+                            <option value="2"
+                                @if(isset($responder) && $responder->number_of_guests > 2) selected @endif
+                                @if(isset($responder) && $responder->custom_number_guest == 1) selected @endif
+                            >
+                                Family Off
+                            </option>
+                        </select>
+                    </div> --}}
+                    <!-- Number of Guests -->
+                    <div class="mb-4">
+                        <label for="number_of_guests" class="font-playfair-display rsvp fw-bold mb-2">Number of Guests</label>
+                        <select class="form-select" id="number_of_guests" name="number_of_guests"
+                            @if((isset($responder) && $responder->number_of_guests) || (isset($responder) && $responder->custom_number_guest == 0))
+                                readonly
+                            @endif
+                            required
+                        >
+                            <!-- 2 Guest -->
+                            <option value="1"
+                                @if((isset($responder) && $responder->custom_number_guest == 0) || (isset($responder) && $responder->number_of_guests == 2))
+                                    selected
+                                @endif
+                            >
+                                2 Guest
+                            </option>
+
+                            <!-- Family Off -->
+                            <option value="2"
+                                @if((isset($responder) && $responder->number_of_guests > 2) || (isset($responder) && $responder->custom_number_guest == 1))
+                                    selected
+                                @endif
+                            >
+                                Family Off
+                            </option>
                         </select>
                     </div>
 
+
                     <!-- Family Off Input -->
-                    <div class="mb-4" id="family-off-wrapper">
+                    <div class="mb-4" id="family-off-wrapper" style="@if(isset($responder) && $responder->custom_number_guest == 1) display:block; @else display:none; @endif">
                         <label for="family_off_count" class="font-playfair-display rsvp fw-bold mb-2">Family Member Count</label>
                         <input type="number" class="form-control" id="family_off_count" name="family_off_count" min="1"
-                            placeholder="Masukkan jumlah keluarga" @if(isset($responder) && $responder->number_of_guests != null) value="{{ $responder->number_of_guests }}" readonly @endif>
+                            placeholder="Masukkan jumlah keluarga"
+                            @if((isset($responder) && $responder->number_of_guests != null) ||
+                                (isset($responder) && $responder->custom_number_guest == 0))
+                                value="{{ $responder->number_of_guests }}" readonly
+                            @endif
+                        >
                     </div>
 
                     <!-- Phone Number -->
@@ -216,7 +259,6 @@
                 @forelse($wishes as $wish)
                     <div class="p-4 bg-light rounded shadow-sm mb-3 text-start">
                         <div class="fw-bold">{{ $wish->wish_name }}</div>
-                        {{-- <div class="text-muted small">{{ $wish->created_at->format('d M Y H:i') }}</div> --}}
                         <p class="mt-2 mb-0">{{ $wish->wish_message }}</p>
                     </div>
                 @empty
@@ -305,13 +347,12 @@
 
                     <!-- Body -->
                     <div class="modal-body">
-                        {{-- <form action="{{ route('submit-wishes') }}" method="POST"> --}}
                         <form id="wishForm" action="{{ route('submit-wishes') }}" method="POST">
                             @csrf
                             <!-- Nama -->
                             <div class="mb-3">
                                 <label for="wish_name" class="form-label">Your Name</label>
-                                <input type="text" class="form-control" id="wish_name" name="wish_name" value="{{ $responder->full_name ?? '' }}" @if(isset($responder)) disabled @endif required>
+                                <input type="text" class="form-control" id="wish_name" name="wish_name" value="{{ $responder->full_name ?? '' }}" @if(isset($responder)) readonly @endif required>
                             </div>
 
                             <!-- Pesan -->
@@ -332,18 +373,31 @@
         </div>
     </div>
 
+    <!-- Modal Konfirmasi -->
+    <div class="modal fade" id="confirmSubmitModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-3 shadow">
+            <div class="modal-header">
+                <h5 class="modal-title">Konfirmasi RSVP</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {{-- Are you sure you want to submit your RSVP? <br> --}}
+                Apakah Anda yakin ingin mengirimkan RSVP ?<br>
+                {{-- <small class="text-muted">Form can only be submitted once</small> --}}
+                <small class="text-muted">Formulir RSVP ini hanya dapat dikirimkan sekali</small>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <button type="button" class="btn btn-primary" id="confirmSubmitBtn">Ya, Kirim</button>
+            </div>
+            </div>
+        </div>
+    </div>
+
+
     {{-- Bootstrap JS Bundle (dengan Popper) --}}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-    {{-- Modal Session --}}
-    {{-- @if (session('success') || session('error'))
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                var modal = new bootstrap.Modal(document.getElementById('notificationModal'));
-                modal.show();
-            });
-        </script>
-    @endif --}}
 
     <script>
         // Toggle optional fields
@@ -477,52 +531,105 @@
             rsvpForm.addEventListener("submit", function (e) {
                 e.preventDefault(); // cegah reload
 
-                let formData = new FormData(rsvpForm);
+                // Tampilkan modal konfirmasi kirim RSVP
+                const confirmModal = new bootstrap.Modal(document.getElementById("confirmSubmitModal"));
+                confirmModal.show();
 
-                fetch(rsvpForm.action, {
-                    method: "POST",
-                    headers: {
-                        "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value
-                    },
-                    body: formData
-                })
-                    // .then(res => res.json())
-                    .then(async (res) => {
-                        const contentType = res.headers.get("content-type");
-                        if (contentType && contentType.includes("application/json")) {
-                            return res.json();
-                        } else {
-                            throw new Error("Invalid response (not JSON)");
-                        }
+                // Konfirmasi kirim RSVP
+                confirmSubmitBtn.onclick = function () {
+                    confirmModal.hide();
+
+                    let formData = new FormData(rsvpForm);
+                    fetch(rsvpForm.action, {
+                        method: "POST",
+                        headers: {
+                            "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value
+                        },
+                        body: formData
                     })
-                    .then(data => {
-                        let messageText = "";
-                        // Kalau pesan error >1 , dijadikan 1 string
-                        if (!data.success && typeof data.message === "object") {
-                            let errors = [];
-                            for (let field in data.message) {
-                                if (data.message.hasOwnProperty(field)) {
-                                    errors.push(...data.message[field]);
-                                }
+                        .then(async (res) => {
+                            const contentType = res.headers.get("content-type");
+                            if (contentType && contentType.includes("application/json")) {
+                                return res.json();
+                            } else {
+                                throw new Error("Invalid response (not JSON)");
                             }
-                            messageText = errors.join("\n");
-                        } else {
-                            messageText = data.message;
-                        }
-                        showNotification(data.success, messageText);
+                        })
+                        .then(data => {
+                            let messageText = "";
+                            // Kalau pesan error >1 , dijadikan 1 string
+                            if (!data.success && typeof data.message === "object") {
+                                let errors = [];
+                                for (let field in data.message) {
+                                    if (data.message.hasOwnProperty(field)) {
+                                        errors.push(...data.message[field]);
+                                    }
+                                }
+                                messageText = errors.join("\n");
+                            } else {
+                                messageText = data.message;
+                            }
+                            showNotification(data.success, messageText);
 
-                        if (data.success && data.status === 'update') {
-                            disableRsvpForm(data.responder);
-                        } else if (data.success && data.status === 'create') {
-                            resetRsvpForm();
-                        }
-                    })
-                    // .catch(err => console.error(err));
-                    .catch(err => {
-                        showNotification(false, "Unexpected error: " + err);
-                    });
+                            if (data.success && data.status === 'update') {
+                                disableRsvpForm(data.responder);
+                            } else if (data.success && data.status === 'create') {
+                                resetRsvpForm();
+                            }
+                        })
+                        .catch(err => {
+                            showNotification(false, "Unexpected error: " + err);
+                        });
+                    }
             });
         }
+
+        // WISHES FORM
+        // const wishForm = document.getElementById("wishForm");
+        // const wishesList = document.querySelector(".wishes-list");
+
+        // if (wishForm) {
+        //     wishForm.addEventListener("submit", function (e) {
+        //         e.preventDefault();
+
+        //         let formData = new FormData(wishForm);
+
+        //         fetch(wishForm.action, {
+        //             method: "POST",
+        //             headers: {
+        //                 "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value
+        //             },
+        //             body: formData
+        //         })
+        //             .then(res => res.json())
+        //             .then(data => {
+        //                 showNotification(data.success, data.message);
+
+        //                 if (data.success) {
+        //                     // Tambahkan wish baru ke list tanpa reload
+        //                     let newWish = `
+        //                         <div class="p-4 bg-light rounded shadow-sm mb-3 text-start">
+        //                             <div class="fw-bold">${data.wish.wish_name}</div>
+        //                             <p class="mt-2 mb-0">${data.wish.wish_message}</p>
+        //                         </div>
+        //                     `;
+        //                     wishesList.insertAdjacentHTML("afterbegin", newWish);
+
+        //                     wishForm.reset();
+
+        //                     // Tutup modal
+        //                     let modal = bootstrap.Modal.getInstance(document.getElementById("sendWishesModal"));
+        //                     modal.hide();
+        //             } else {
+        //                 showNotification(false, "Unexpected error: " + err);
+        //             }
+        //         })
+        //         // .catch(err => console.error(err));
+        //         .catch(err => {
+        //             showNotification(false, "Unexpected error: " + err);
+        //         });
+        //     });
+        // }
 
         // WISHES FORM
         const wishForm = document.getElementById("wishForm");
@@ -541,11 +648,33 @@
                     },
                     body: formData
                 })
-                    .then(res => res.json())
-                    .then(data => {
-                        showNotification(data.success, data.message);
+                .then(async (res) => {
+                    const contentType = res.headers.get("content-type");
+                    if (contentType && contentType.includes("application/json")) {
+                        return res.json();
+                    } else {
+                        throw new Error("Invalid response (not JSON)");
+                    }
+                })
+                .then(data => {
+                        let messageText = "";
+                        // Kalau pesan error >1 , dijadikan 1 string
+                        if (!data.success && typeof data.message === "object") {
+                            let errors = [];
+                            for (let field in data.message) {
+                                if (data.message.hasOwnProperty(field)) {
+                                    errors.push(...data.message[field]);
+                                }
+                            }
+                            messageText = errors.join("\n");
+                        } else {
+                            messageText = data.message;
+                        }
 
                         if (data.success) {
+                            showNotification(data.success, messageText);
+                            // showNotification(true, data.message);
+
                             // Tambahkan wish baru ke list tanpa reload
                             let newWish = `
                                 <div class="p-4 bg-light rounded shadow-sm mb-3 text-start">
@@ -560,13 +689,55 @@
                             // Tutup modal
                             let modal = bootstrap.Modal.getInstance(document.getElementById("sendWishesModal"));
                             modal.hide();
-                    } else {
+                        } else {
+                            // tampilkan semua pesan error validasi
+                            if (typeof data.message === "object") {
+                                let errors = Object.values(data.message).flat().join("<br>");
+                                showNotification(false, errors);
+                            } else {
+                                showNotification(false, data.message || "Something went wrong.");
+                            }
+                        }
+                    })
+                    .catch(err => {
                         showNotification(false, "Unexpected error: " + err);
-                    }
-                })
-                .catch(err => console.error(err));
-            });
+                    });
+                });
+
+        //         .then(data => {
+        //             if (data.success) {
+        //                 showNotification(true, data.message);
+
+        //                 // Tambahkan wish baru ke list tanpa reload
+        //                 let newWish = `
+        //                     <div class="p-4 bg-light rounded shadow-sm mb-3 text-start">
+        //                         <div class="fw-bold">${data.wish.wish_name}</div>
+        //                         <p class="mt-2 mb-0">${data.wish.wish_message}</p>
+        //                     </div>
+        //                 `;
+        //                 wishesList.insertAdjacentHTML("afterbegin", newWish);
+
+        //                 wishForm.reset();
+
+        //                 // Tutup modal
+        //                 let modal = bootstrap.Modal.getInstance(document.getElementById("sendWishesModal"));
+        //                 modal.hide();
+        //             } else {
+        //                 // tampilkan semua pesan error validasi
+        //                 if (typeof data.message === "object") {
+        //                     let errors = Object.values(data.message).flat().join("<br>");
+        //                     showNotification(false, errors);
+        //                 } else {
+        //                     showNotification(false, data.message || "Something went wrong.");
+        //                 }
+        //             }
+        //         })
+        //         .catch(err => {
+        //             showNotification(false, "Unexpected error: " + err.message);
+        //         });
+        //     });
         }
+
 
         // Reset RSVP Form
         function resetRsvpForm() {
@@ -632,6 +803,12 @@
                 if (responderData.full_name) {
                     document.getElementById("full_name").value = responderData.full_name;
                     document.getElementById("full_name").readonly = true;
+                }
+
+                // Readonly phone
+                if (responderData.phone) {
+                    document.getElementById("phone").value = responderData.phone;
+                    document.getElementById("phone").readonly = true;
                 }
 
                 // Readonly dropdown

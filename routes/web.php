@@ -27,11 +27,14 @@ use App\Http\Controllers\WishesController;
 
 Route::get('/', [InvitationController::class, 'index'])->name('invitation.index');
 Route::get('/invitation', [InvitationController::class, 'index']);
-Route::get('/invitation/to/{id}', [InvitationController::class, 'show']);
-
-
+Route::get('/invitation/{uuid}', [InvitationController::class, 'show']);
+Route::get('/responder', [ResponderController::class, 'create'])->name('responder');
 
 Route::post('/submit-rsvp', [ResponderController::class, 'submit'])->name('submit-rsvp');
 Route::post('/submitnew-rsvp', [ResponderController::class, 'submitnew'])->name('submitnew-rsvp');
 Route::post('/submit-wishes', [WishesController::class, 'submit'])->name('submit-wishes');
+Route::post('/addnewresponder', [ResponderController::class, 'store'])->name('addnewresponder');
+
+Route::get('/responder/edit/{id}', [ResponderController::class, 'edit'])->name('responder.edit');
+Route::post('/responder/update/{id}', [ResponderController::class, 'update'])->name('responder.update');
 

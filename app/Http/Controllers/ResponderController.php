@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Responder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class ResponderController extends Controller
 {
@@ -42,6 +43,7 @@ class ResponderController extends Controller
             $responder->update([
                 'is_attending' => $request->is_attending,
                 'number_of_guests' => $numberOfGuests,
+                'phone' => $request->phone,
             ]);
 
             return response()->json([
@@ -87,7 +89,9 @@ class ResponderController extends Controller
 
         // Responder::create([
         $responder = Responder::create([
+            'uuid' => uniqid(),
             'full_name' => $request->full_name,
+            'custom_number_guest' => 0,
             'number_of_guests' => $numberOfGuests,
             'phone' => $request->phone,
             'is_attending' => $request->is_attending,
@@ -102,4 +106,84 @@ class ResponderController extends Controller
             'status' => 'create'
         ]);
     }
+
+    public function create(Request $request)
+    {
+        $search = $request->input('search');
+        $responders = Responder::when($search, function ($query, $search) {
+            $query->where('full_name', 'like', "%{$search}%")
+                ->orWhere('phone', 'like', "%{$search}%");
+        })
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+        // $responders = Responder::orderBy('created_at', 'desc')->get();
+        return view('responder', compact('responders'));
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'full_name' => 'required|string|max:255',
+            'custom_number_guest' => 'required|in:1,0',
+            'max_guest_number' => 'nullable|numeric|min:0',
+            'number_of_guests' => 'nullable|numeric|min:0',
+            'phone' => 'nullable|numeric',
+            'is_attending' => 'nullable|in:1,0',
+        ]);
+
+        $responder = Responder::create([
+            'uuid' => uniqid(),
+            'full_name' => $request->full_name,
+            'custom_number_guest' => $request->custom_number_guest,
+            'max_guest_number' => $request->max_guest_number ?? '',
+            'number_of_guests' => '',
+            'phone' => $request->phone,
+            'is_attending' => '',
+            'is_active' => '1',
+        ]);
+
+        return back()->with('success', 'Responder created successfully!');
+    }
+
+    public function edit($id)
+    {
+        $responder = Responder::findOrFail($id);
+        return view('responder_edit', compact('responder'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'full_name' => 'required|string|max:255',
+            'phone' => 'nullable|string|max:50',
+            'custom_number_guest' => 'required|boolean',
+            // Hanya required kalau custom_number_guest == 1
+            'max_guest_number' => [
+                'nullable',
+                'integer',
+                'min:1',
+                Rule::requiredIf(fn () => $request->custom_number_guest == 1),
+            ],
+            'number_of_guests' => 'nullable|numeric|min:0',
+            'is_attending' => 'nullable|string|max:1',
+        ]);
+
+        // Jika custom_number_guest == 0, maka max_guest_number dikosongkan
+        if ($validated['custom_number_guest'] == 0) {
+            $validated['max_guest_number'] = '';
+        }
+        if ($validated['number_of_guests'] == '') {
+            $validated['number_of_guests'] = '';
+        }
+        if ($validated['is_attending'] == '') {
+            $validated['is_attending'] = '';
+        }
+
+        $responder = Responder::findOrFail($id);
+        $responder->update($validated);
+
+        return redirect()->route('responder')->with('success', 'Responder updated successfully!');
+    }
+
 }

@@ -46,7 +46,7 @@
             <img src="{{ asset('images/image1(edited).jpg') }}" class="img-fluid" alt="Foto Pasangan">
             {{-- Button Music --}}
             <div class="position-absolute top-0 end-0 sticky-top">
-                <button id="toggleMusicBtn" onclick="toggleMusic()" style="font-size: 24px; background: none; border: none;">
+                <button id="toggleMusicBtn" onclick="toggleMusic()" style="background: none; border: none;">
                     <i id="musicIcon" class="fas fa-volume-xmark"></i>
                 </button>
             </div>
@@ -116,7 +116,7 @@
 
         <div class="py-5"></div>
 
-        <div class="col-7 p-4 text-center bg-light rounded shadow-sm animate-on-scroll slide-in-right" style="max-width: 500px; margin: auto;">
+        <div class="col-11 col-md-7 p-4 text-center bg-light rounded shadow-sm animate-on-scroll slide-in-right" style="max-width: 500px; margin: auto;">
             <div class="font-noto-sans virtual-blessings-title pb-4">Virtual Blessings</div>
             <div class="font-playfair-display virtual-blessings">
                 Your generosity and thoughtfulness mean everything to us.
@@ -130,7 +130,7 @@
 
         <div class="py-5"></div>
 
-        <div class="col-7 p-4 bg-light rounded shadow-sm animate-on-scroll slide-in-left" style="max-width: 500px; margin: auto;">
+        <div class="col-11 col-md-7 p-4 bg-light rounded shadow-sm animate-on-scroll slide-in-left" style="max-width: 500px; margin: auto;">
             <form id="rsvpForm" action="{{ isset($responder) ? route('submit-rsvp') : route('submitnew-rsvp') }}" method="POST">
                 @csrf
                 <div class="font-noto-sans rsvp-title text-center">RSVP</div>
@@ -229,7 +229,7 @@
         <div class="py-5"></div>
         <div class="py-5"></div>
 
-        <div class="col-10 p-4 text-center animate-on-scroll slide-in-bottom" style="margin: auto;">
+        <div class="col-11 col-md-10 p-4 text-center animate-on-scroll slide-in-bottom" style="margin: auto;">
             <div class="font-noto-sans send-wishes-title">Send Wishes</div>
 
             <a class="btn btn-custom w-25 mx-auto mt-5 mb-3" data-bs-toggle="modal" data-bs-target="#sendWishesModal">

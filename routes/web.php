@@ -21,10 +21,6 @@ use App\Http\Controllers\WishesController;
 //     // return view('welcome');
 // });
 
-// Route::get('/invitation', function () {
-//     return view('invitation');
-// });
-
 Route::get('/', [InvitationController::class, 'index'])->name('invitation.index');
 Route::get('/invitation', [InvitationController::class, 'index']);
 Route::get('/invitation/{uuid}', [InvitationController::class, 'show']);

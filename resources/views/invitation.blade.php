@@ -165,24 +165,6 @@
 
                 <div id="optional-fields" style="@if(isset($responder) && $responder->is_attending == 1) display:block; @else display:none; @endif">
                     <!-- Number of Guests -->
-                    {{-- <div class="mb-4">
-                        <label for="number_of_guests" class="font-playfair-display rsvp fw-bold mb-2">Number of Guests</label>
-                        <select class="form-select" id="number_of_guests" name="number_of_guests" @if(isset($responder) && $responder->number_of_guests != null) readonly @endif required>
-                            <option value="1"
-                                @if(isset($responder) && $responder->number_of_guests == 2) selected @endif selected
-                                @if(isset($responder) && $responder->custom_number_guest == 0) selected @endif
-                            >
-                                2 Guest
-                            </option>
-                            <option value="2"
-                                @if(isset($responder) && $responder->number_of_guests > 2) selected @endif
-                                @if(isset($responder) && $responder->custom_number_guest == 1) selected @endif
-                            >
-                                Family Off
-                            </option>
-                        </select>
-                    </div> --}}
-                    <!-- Number of Guests -->
                     <div class="mb-4">
                         <label for="number_of_guests" class="font-playfair-display rsvp fw-bold mb-2">Number of Guests</label>
                         <select class="form-select" id="number_of_guests" name="number_of_guests"
@@ -585,53 +567,6 @@
         }
 
         // WISHES FORM
-        // const wishForm = document.getElementById("wishForm");
-        // const wishesList = document.querySelector(".wishes-list");
-
-        // if (wishForm) {
-        //     wishForm.addEventListener("submit", function (e) {
-        //         e.preventDefault();
-
-        //         let formData = new FormData(wishForm);
-
-        //         fetch(wishForm.action, {
-        //             method: "POST",
-        //             headers: {
-        //                 "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value
-        //             },
-        //             body: formData
-        //         })
-        //             .then(res => res.json())
-        //             .then(data => {
-        //                 showNotification(data.success, data.message);
-
-        //                 if (data.success) {
-        //                     // Tambahkan wish baru ke list tanpa reload
-        //                     let newWish = `
-        //                         <div class="p-4 bg-light rounded shadow-sm mb-3 text-start">
-        //                             <div class="fw-bold">${data.wish.wish_name}</div>
-        //                             <p class="mt-2 mb-0">${data.wish.wish_message}</p>
-        //                         </div>
-        //                     `;
-        //                     wishesList.insertAdjacentHTML("afterbegin", newWish);
-
-        //                     wishForm.reset();
-
-        //                     // Tutup modal
-        //                     let modal = bootstrap.Modal.getInstance(document.getElementById("sendWishesModal"));
-        //                     modal.hide();
-        //             } else {
-        //                 showNotification(false, "Unexpected error: " + err);
-        //             }
-        //         })
-        //         // .catch(err => console.error(err));
-        //         .catch(err => {
-        //             showNotification(false, "Unexpected error: " + err);
-        //         });
-        //     });
-        // }
-
-        // WISHES FORM
         const wishForm = document.getElementById("wishForm");
         const wishesList = document.querySelector(".wishes-list");
 
@@ -703,39 +638,6 @@
                         showNotification(false, "Unexpected error: " + err);
                     });
                 });
-
-        //         .then(data => {
-        //             if (data.success) {
-        //                 showNotification(true, data.message);
-
-        //                 // Tambahkan wish baru ke list tanpa reload
-        //                 let newWish = `
-        //                     <div class="p-4 bg-light rounded shadow-sm mb-3 text-start">
-        //                         <div class="fw-bold">${data.wish.wish_name}</div>
-        //                         <p class="mt-2 mb-0">${data.wish.wish_message}</p>
-        //                     </div>
-        //                 `;
-        //                 wishesList.insertAdjacentHTML("afterbegin", newWish);
-
-        //                 wishForm.reset();
-
-        //                 // Tutup modal
-        //                 let modal = bootstrap.Modal.getInstance(document.getElementById("sendWishesModal"));
-        //                 modal.hide();
-        //             } else {
-        //                 // tampilkan semua pesan error validasi
-        //                 if (typeof data.message === "object") {
-        //                     let errors = Object.values(data.message).flat().join("<br>");
-        //                     showNotification(false, errors);
-        //                 } else {
-        //                     showNotification(false, data.message || "Something went wrong.");
-        //                 }
-        //             }
-        //         })
-        //         .catch(err => {
-        //             showNotification(false, "Unexpected error: " + err.message);
-        //         });
-        //     });
         }
 
 

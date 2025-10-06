@@ -158,55 +158,6 @@
         </div>
     </div>
 
-
-    {{-- Daftar Responder --}}
-    {{-- <div class="col-10 p-4 mt-5 bg-light rounded shadow-sm animate-on-scroll slide-in-bottom" style="margin: auto;">
-        <div class="font-noto-sans rsvp-title text-center mb-4">Guest List (Responder)</div>
-
-        @php
-            dd(isset($responders) && $responders->count() > 0);
-        @endphp
-        @if(isset($responders) && $responders->count() > 0)
-            <div class="table-responsive">
-                <table class="table table-bordered table-striped align-middle">
-                    <thead class="table-secondary">
-                        <tr>
-                            <th>No</th>
-                            <th>Full Name</th>
-                            <th>Phone</th>
-                            <th>Attending</th>
-                            <th>Number of Guests</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($responders as $index => $r)
-                            <tr>
-                                <td>{{ $index + 1 }}</td>
-                                <td>{{ $r->full_name }}</td>
-                                <td>{{ $r->phone }}</td>
-                                <td>
-                                    @if($r->is_attending === 1)
-                                        <span class="badge bg-success">Yes</span>
-                                    @elseif($r->is_attending === 0)
-                                        <span class="badge bg-danger">No</span>
-                                    @else
-                                        <span class="badge bg-secondary">Pending</span>
-                                    @endif
-                                </td>
-                                <td>{{ $r->number_of_guests ?? '-' }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        @else
-            <div class="text-center py-3">
-                <em>No responder yet.</em>
-            </div>
-        @endif
-    </div> --}}
-
-
     <script>
         // Toggle Custom Guest and Max Guest
         const customGuestSelect = document.getElementById('custom_number_guest');

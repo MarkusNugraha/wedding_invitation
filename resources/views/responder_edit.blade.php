@@ -92,7 +92,7 @@
             } else {
                 maxGuestWrapper.style.display = 'none';
                 maxGuestInput.required = false;
-                maxGuestInput.value = ''; // reset nilai
+                maxGuestInput.value = '';
             }
         }
 

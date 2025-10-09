@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" translate="no">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="google" content="notranslate"> {{-- Disable Google Translate --}}
     <title>The Wedding of Michael & Yohana</title>
 
     {{-- Bootstrap --}}
@@ -30,12 +31,15 @@
         <div class="cover-content">
             {{-- Check if $reponder exists --}}
             @if ($responder)
-                <h2 class="font-playfair-display">Dear, {{ $responder->full_name ?? 'Guest' }}</h2>
+                <h2 class="font-playfair-display">Dear, <strong>{{ $responder->full_name ?? 'Guest' }}</strong></h2>
             @endif
-            <h1 class="mb-5 font-playfair-display">You're Invited 🎉</h1>
+            <h2 class="font-playfair-display">You're Invited 🎉</h2>
             {{-- <h1 class="mb-4">You're Invited</h1> --}}
 
-            <p class="mb-2 mt-5 font-euphoria-script">Michael & Yohana</p>
+            {{-- <p class="mb-2 mt-5 font-euphoria-script">Michael<br>&<br>Yohana</p> --}}
+            <div class="mb-5 mt-5 font-euphoria-script text-center">
+                Michael<br>&<br>Yohana
+            </div>
             <button id="openInvitationBtn" class="btn btn-custom">Open Invitation</button>
         </div>
     </div>
@@ -91,7 +95,7 @@
         <div class="py-5"></div>
 
         {{-- Holy Matrimony --}}
-        <div class="text-center animate-on-scroll slide-in-top">
+        <div class="text-center px-2 animate-on-scroll slide-in-top">
             <div class="font-noto-sans date-title pb-4">Holy Matrimony</div>
             <div class="font-playfair-display date fw-bold">Saturday, 8 November 2025</div>
             <div class="font-playfair-display date">10:00 - 11:00 WIB</div>
@@ -104,7 +108,7 @@
         <div class="py-5"></div>
 
         {{-- Reception --}}
-        <div class="text-center animate-on-scroll slide-in-top">
+        <div class="text-center px-2 animate-on-scroll slide-in-top">
             <div class="font-noto-sans date-title pb-4">Reception</div>
             <div class="font-playfair-display date fw-bold">Saturday, 8 November 2025</div>
             <div class="font-playfair-display date">18:00 - selesai</div>
@@ -159,7 +163,7 @@
                 <!-- Full Name -->
                 <div class="my-5">
                     <label for="full_name" class="font-playfair-display rsvp fw-bold mb-2">Full Name</label>
-                    <input type="text" class="form-control" id="full_name" name="full_name" placeholder="Your full name"
+                    <input type="text" class="form-control font-noto-sans" id="full_name" name="full_name" placeholder="Your full name"
                     value="{{ $responder->full_name ?? '' }}" @if(isset($responder) && $responder->full_name != null) readonly @endif required>
                 </div>
 
@@ -167,7 +171,7 @@
                     <!-- Number of Guests -->
                     <div class="mb-4">
                         <label for="number_of_guests" class="font-playfair-display rsvp fw-bold mb-2">Number of Guests</label>
-                        <select class="form-select" id="number_of_guests" name="number_of_guests"
+                        <select class="form-select font-noto-sans" id="number_of_guests" name="number_of_guests"
                             @if((isset($responder) && $responder->number_of_guests) || (isset($responder) && $responder->custom_number_guest == 0))
                                 readonly
                             @endif
@@ -188,7 +192,7 @@
                                     selected
                                 @endif
                             >
-                                Family Off
+                                Family
                             </option>
                         </select>
                     </div>
@@ -197,20 +201,33 @@
                     <!-- Family Off Input -->
                     <div class="mb-4" id="family-off-wrapper" style="@if(isset($responder) && $responder->custom_number_guest == 1) display:block; @else display:none; @endif">
                         <label for="family_off_count" class="font-playfair-display rsvp fw-bold mb-2">Family Member Count</label>
-                        <input type="number" class="form-control" id="family_off_count" name="family_off_count" min="1"
-                            placeholder="Masukkan jumlah keluarga"
-                            @if((isset($responder) && $responder->number_of_guests != null) ||
-                                (isset($responder) && $responder->custom_number_guest == 0))
-                                value="{{ $responder->number_of_guests }}" readonly
-                            @endif
-                        >
+
+                        <div class="number-spinner mx-auto">
+                            <button type="button" class="btn btn-custom btn-sm" id="decreaseCount" @if(isset($responder) && $responder->is_attending != null) disabled @endif>−</button>
+                            <input
+                                type="number"
+                                class="form-control text-center font-noto-sans"
+                                id="family_off_count"
+                                name="family_off_count"
+                                min="1"
+                                data-max="{{ isset($responder) ? ($responder->max_guest_number ?? '') : '' }}"
+                                {{-- placeholder="Masukkan jumlah keluarga" --}}
+                                @if((isset($responder) && $responder->number_of_guests != null) ||
+                                    (isset($responder) && $responder->custom_number_guest == 0))
+                                    value="{{ $responder->number_of_guests }}" {{-- readonly --}}
+                                @endif
+                                readonly
+                            >
+                            <button type="button" class="btn btn-custom btn-sm" id="increaseCount" @if(isset($responder) && $responder->is_attending != null) disabled @endif>+</button>
+                        </div>
                     </div>
 
-                    <!-- Phone Number -->
-                    <div class="mb-5">
+
+                    <!-- Phone Number | Hide phone field -->
+                    <div class="mb-5" style="display: none;">
                         <label for="phone" class="font-playfair-display rsvp fw-bold mb-2">Phone Number</label>
-                        <input type="tel" class="form-control" id="phone" name="phone" placeholder="+62123456" value="{{ $responder->phone ?? '' }}"
-                            @if(isset($responder) && $responder->phone != null) readonly @endif required>
+                        <input type="hidden" class="form-control font-noto-sans" id="phone" name="phone" placeholder="+62123456" value="{{ $responder->phone ?? '' }}"
+                            @if(isset($responder) && $responder->phone != null) readonly @endif {{-- required --}}>
                     </div>
                 </div>
 
@@ -292,8 +309,8 @@
                                     <img src="{{ asset('images/bca-logo.png')}}" alt="BCA Logo" class="img-fluid my-2"
                                         style="max-width:120px;">
                                 </div>
-                                <strong>a.n. Yohana Alvania Sembodo</strong><br>
-                                <strong id="rek1">1234567890</strong>
+                                <strong>a.n. Michael Cahyadi Kuslin</strong><br>
+                                <strong id="rek1">8705341814</strong>
                                 <button class="btn btn-sm btn-outline-primary ms-2"
                                     onclick="copyToClipboard('rek1')">Copy</button>
                             </li>
@@ -304,10 +321,11 @@
                                     <img src="{{ asset('images/bca-logo.png')}}" alt="BCA Logo" class="img-fluid my-2"
                                         style="max-width:120px;">
                                 </div>
-                                <strong>a.n. Michael Cahyadi Kuslin</strong><br>
-                                <strong id="rek2">0987654321</strong>
+                                <strong>a.n. Yohana Alvania Sembodo</strong><br>
+                                <strong id="rek2">0182141028</strong>
                                 <button class="btn btn-sm btn-outline-primary ms-2"
                                     onclick="copyToClipboard('rek2')">Copy</button>
+
                             </li>
                         </ul>
                     </div>
@@ -334,13 +352,13 @@
                             <!-- Nama -->
                             <div class="mb-3">
                                 <label for="wish_name" class="form-label">Your Name</label>
-                                <input type="text" class="form-control" id="wish_name" name="wish_name" value="{{ $responder->full_name ?? '' }}" @if(isset($responder)) readonly @endif required>
+                                <input type="text" class="form-control font-noto-sans" id="wish_name" name="wish_name" value="{{ $responder->full_name ?? '' }}" @if(isset($responder)) readonly @endif required>
                             </div>
 
                             <!-- Pesan -->
                             <div class="mb-3">
                                 <label for="wish_message" class="form-label">Your Wishes</label>
-                                <textarea class="form-control" id="wish_message" name="wish_message" rows="4"
+                                <textarea class="form-control font-noto-sans" id="wish_message" name="wish_message" rows="4"
                                     required></textarea>
                             </div>
 
@@ -718,6 +736,16 @@
                 familyOffInput.setAttribute("readonly", true);
                 readonlyDropdown();
 
+                // Disable increase and decrease button
+                const decreaseBtn = document.getElementById("decreaseCount");
+                const increaseBtn = document.getElementById("increaseCount");
+                if (decreaseBtn) {
+                    decreaseBtn.disabled = true;
+                }
+                if (increaseBtn) {
+                    increaseBtn.disabled = true;
+                }
+
                 // Disable submit button
                 const submitButton = document.getElementById("rsvpSubmitBtn");
                 if (submitButton) {
@@ -735,6 +763,29 @@
                 }
             });
         }
+
+        // Count family off increase and decrease button
+        const input = document.getElementById("family_off_count");
+        const decreaseBtn = document.getElementById("decreaseCount");
+        const increaseBtn = document.getElementById("increaseCount");
+
+        decreaseBtn.addEventListener("click", () => {
+            let currentValue = parseInt(input.value) || 1;
+            if (currentValue > parseInt(input.min || 1)) {
+                input.value = currentValue - 1;
+            }
+        });
+
+        increaseBtn.addEventListener("click", () => {
+            let currentValue = parseInt(input.value) || 1;
+
+            // Check maximum guest
+            const maxGuest = parseInt(input.dataset.max);
+            if (!isNaN(maxGuest) && currentValue >= maxGuest) {
+                return;
+            }
+            input.value = currentValue + 1;
+        });
     </script>
 </body>
 </html>

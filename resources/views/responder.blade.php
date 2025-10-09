@@ -57,8 +57,8 @@
             <div class="mb-3">
                 <label for="custom_number_guest" class="form-label">Allow Custom Guest?</label>
                 <select name="custom_number_guest" id="custom_number_guest" class="form-select" required>
-                    <option value="0" selected>No</option>
-                    <option value="1">Yes</option>
+                    <option value="0" selected>No (2 guest only)</option>
+                    <option value="1">Yes (Family)</option>
                 </select>
             </div>
 

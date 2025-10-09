@@ -49,8 +49,8 @@
             <div class="mb-3">
                 <label for="custom_number_guest" class="form-label">Allow Custom Guest?</label>
                 <select name="custom_number_guest" id="custom_number_guest" class="form-select" required>
-                    <option value="0" {{ $responder->custom_number_guest == 0 ? 'selected' : '' }}>No</option>
-                    <option value="1" {{ $responder->custom_number_guest == 1 ? 'selected' : '' }}>Yes</option>
+                    <option value="0" {{ $responder->custom_number_guest == 0 ? 'selected' : '' }}>No (2 geust only)</option>
+                    <option value="1" {{ $responder->custom_number_guest == 1 ? 'selected' : '' }}>Yes (Family)</option>
                 </select>
             </div>
 

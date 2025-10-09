@@ -11,7 +11,7 @@ body {
     overflow-x: hidden;
 }
 
-.font-noto-sans {
+.font-noto-sans{
     font-family: "Noto Sans", sans-serif;
     font-optical-sizing: auto;
     font-style: normal;
@@ -192,13 +192,22 @@ body {
 
 .flower-right {
     right: -60px;
-    top: 20%;
+    top: 25%;
     transform: translateY(-50%) rotate(-45deg);
 }
 
 .position-relative {
   overflow-x: hidden;
   overflow-y: hidden;
+}
+
+.number-spinner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* jarak antar tombol dan input */
+    width: 100%;
+    max-width: 250px;
 }
 
 @keyframes fadeIn {

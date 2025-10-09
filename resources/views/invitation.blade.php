@@ -216,7 +216,7 @@
                                     (isset($responder) && $responder->custom_number_guest == 0))
                                     value="{{ $responder->number_of_guests }}" {{-- readonly --}}
                                 @endif
-                                readonly
+                                required
                             >
                             <button type="button" class="btn btn-custom btn-sm" id="increaseCount" @if(isset($responder) && $responder->is_attending != null) disabled @endif>+</button>
                         </div>
@@ -786,6 +786,9 @@
             }
             input.value = currentValue + 1;
         });
+
+        // Disable input
+        familyOffInput.addEventListener('keydown', (e) => e.preventDefault());
     </script>
 </body>
 </html>

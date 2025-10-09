@@ -426,6 +426,9 @@
             const familyOffWrapper = document.getElementById('family-off-wrapper');
             const familyOffInput = document.getElementById('family_off_count');
 
+            // Disable input
+            familyOffInput.addEventListener('keydown', (e) => e.preventDefault());
+
             function toggleOptionalFields() {
                 if (yesRadio.checked) {
                     optionalFields.style.display = 'block';
@@ -786,9 +789,6 @@
             }
             input.value = currentValue + 1;
         });
-
-        // Disable input
-        familyOffInput.addEventListener('keydown', (e) => e.preventDefault());
     </script>
 </body>
 </html>

@@ -15,6 +15,7 @@ class Responder extends Model
         'uuid',
         'full_name',
         'custom_number_guest',
+        'show_virtual_blessing',
         'max_guest_number',
         'number_of_guests',
         'phone',

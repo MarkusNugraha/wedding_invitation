@@ -16,6 +16,7 @@ return new class extends Migration
             $table->uuid('uuid')->unique();
             $table->string('full_name');
             $table->string('custom_number_guest');
+            $table->string('show_virtual_blessing');
             $table->string('max_guest_number')->nullable();
             $table->string('number_of_guests')->nullable();
             $table->string('phone')->nullable();

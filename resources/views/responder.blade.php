@@ -53,6 +53,18 @@
                     value="{{ old('phone') }}">
             </div>
 
+            {{-- Show Virtual Blessing --}}
+            <div class="mb-3">
+                <label for="show_virtual_blessing" class="form-label">
+                    Show Virtual Blessing Section
+                </label>
+                <select name="show_virtual_blessing" id="show_virtual_blessing" class="form-select" required>
+                    <option value="1" selected>Yes</option>
+                    <option value="0" >No</option>
+                </select>
+            </div>
+
+
             {{-- Custom Number of Guests --}}
             <div class="mb-3">
                 <label for="custom_number_guest" class="form-label">Allow Custom Guest?</label>
@@ -77,9 +89,9 @@
     <div class="container mt-5 col-7 p-4 bg-light rounded shadow-sm">
         <h3 class="mb-4">Responder List</h3>
 
-        {{-- Search Form --}}
+        {{-- Search + Filter --}}
         <div class="mb-3">
-            <form method="GET" action="{{ route('responder') }}" class="d-flex" style="gap: 8px;">
+            <form method="GET" action="{{ route('responder') }}" class="d-flex align-items-center" style="gap: 8px;">
                 <input
                     type="text"
                     name="search"
@@ -88,15 +100,29 @@
                     value="{{ $search ?? '' }}"
                     style="width: 250px;"
                 >
+
+                {{-- Tombol Search --}}
                 <button type="submit" class="btn btn-outline-primary">
                     <i class="fa-solid fa-magnifying-glass"></i> Search
                 </button>
 
-                @if(!empty($search))
+                {{-- Tombol Reset --}}
+                {{-- @if(!empty($search) || request('is_active') !== null)
                     <a href="{{ route('responder') }}" class="btn btn-outline-secondary">
                         <i class="fa-solid fa-rotate-left"></i> Reset
                     </a>
-                @endif
+                @endif --}}
+
+                {{-- Tombol Filter isActive --}}
+                {{-- <button type="submit" name="is_active" value="{{ request('is_active') == '1' ? '0' : '1' }}"
+                    class="btn btn-outline-{{ request('is_active') == '1' ? 'danger' : 'success' }}"
+                    title="{{ request('is_active') == '1' ? 'Tampilkan Non Aktif' : 'Tampilkan Aktif' }}">
+                    @if(request('is_active') == '1')
+                        <i class="fa-solid fa-eye-slash"></i> Nonaktif
+                    @else
+                        <i class="fa-solid fa-eye"></i> Aktif
+                    @endif
+                </button> --}}
             </form>
         </div>
 
@@ -178,7 +204,6 @@
 
         function copyLink(link) {
             navigator.clipboard.writeText(link).then(() => {
-                // ✅ Notifikasi singkat
                 const alert = document.createElement('div');
                 alert.className = 'alert alert-success position-fixed top-0 end-0 m-3 py-2 px-3 fade show';
                 alert.style.zIndex = '9999';

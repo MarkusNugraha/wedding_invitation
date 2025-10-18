@@ -34,6 +34,7 @@
                 <h2 class="font-playfair-display">Dear, <strong>{{ $responder->full_name ?? 'Guest' }}</strong></h2>
             @endif
             <h2 class="font-playfair-display">You're Invited 🎉</h2>
+            {{-- <h2 class="font-playfair-display">You're Invited !</h2> --}}
             {{-- <h1 class="mb-4">You're Invited</h1> --}}
 
             {{-- <p class="mb-2 mt-5 font-euphoria-script">Michael<br>&<br>Yohana</p> --}}
@@ -120,19 +121,21 @@
 
         <div class="py-5"></div>
 
-        <div class="col-11 col-md-7 p-4 text-center bg-light rounded shadow-sm animate-on-scroll slide-in-right" style="max-width: 500px; margin: auto;">
-            <div class="font-noto-sans virtual-blessings-title pb-4">Virtual Blessings</div>
-            <div class="font-playfair-display virtual-blessings">
-                Your generosity and thoughtfulness mean everything to us.
-                Thanks for celebrating our special day!
+        @if (isset($responder) && $responder->show_virtual_blessing)
+            <div class="col-11 col-md-7 p-4 text-center bg-light rounded shadow-sm animate-on-scroll slide-in-right" style="max-width: 500px; margin: auto;">
+                <div class="font-noto-sans virtual-blessings-title pb-4">Virtual Blessings</div>
+                <div class="font-playfair-display virtual-blessings">
+                    Your generosity and thoughtfulness mean everything to us.
+                    Thanks for celebrating our special day!
+                </div>
+
+                <a class="btn btn-custom w-25 mx-auto mt-5 mb-3" data-bs-toggle="modal" data-bs-target="#sendGiftModal">
+                    Send Gift
+                </a>
             </div>
 
-            <a class="btn btn-custom w-25 mx-auto mt-5 mb-3" data-bs-toggle="modal" data-bs-target="#sendGiftModal">
-                Send Gift
-            </a>
-        </div>
-
-        <div class="py-5"></div>
+            <div class="py-5"></div>
+        @endif
 
         <div class="col-11 col-md-7 p-4 bg-light rounded shadow-sm animate-on-scroll slide-in-left" style="max-width: 500px; margin: auto;">
             <form id="rsvpForm" action="{{ isset($responder) ? route('submit-rsvp') : route('submitnew-rsvp') }}" method="POST">

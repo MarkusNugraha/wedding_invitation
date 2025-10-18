@@ -49,10 +49,21 @@
             <div class="mb-3">
                 <label for="custom_number_guest" class="form-label">Allow Custom Guest?</label>
                 <select name="custom_number_guest" id="custom_number_guest" class="form-select" required>
-                    <option value="0" {{ $responder->custom_number_guest == 0 ? 'selected' : '' }}>No (2 geust only)</option>
+                    <option value="0" {{ $responder->custom_number_guest == 0 ? 'selected' : '' }}>No (2 guest only)</option>
                     <option value="1" {{ $responder->custom_number_guest == 1 ? 'selected' : '' }}>Yes (Family)</option>
                 </select>
             </div>
+
+            <div class="mb-3">
+                <label for="show_virtual_blessing" class="form-label">
+                    Show Virtual Blessing Section
+                </label>
+                <select name="show_virtual_blessing" id="show_virtual_blessing" class="form-select" required>
+                    <option value="1" {{ $responder->show_virtual_blessing == 1 ? 'selected' : '' }}>Yes</option>
+                    <option value="0" {{ $responder->show_virtual_blessing == 0 ? 'selected' : '' }}>No</option>
+                </select>
+            </div>
+
 
             <div class="mb-3" id="maxGuestWrapper">
                 <label for="max_guest_number" class="form-label">Max Guests</label>
@@ -73,6 +84,12 @@
                     <option value="1" @if(old('is_attending', $responder->is_attending) == 1) selected @endif>Yes</option>
                     <option value="0" @if(old('is_attending', $responder->is_attending) == 0) selected @endif>No</option>
                 </select>
+            </div>
+
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="is_active" name="is_active"
+                    value="1" {{ $responder->is_active ? 'checked' : '' }}>
+                <label class="form-check-label" for="is_active">Active</label>
             </div>
 
             <button type="submit" class="btn btn-primary">Update</button>

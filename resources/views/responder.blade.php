@@ -15,7 +15,7 @@
 </head>
 <body>
     {{-- Form Add New Responder --}}
-    <div class="container mt-5 col-7 p-4 bg-light rounded shadow-sm">
+    <div class="container mt-5 col-11 col-md-7 p-4 bg-light rounded shadow-sm">
         <h2 class="mb-4">Add New Responder</h2>
 
         {{-- Success Message --}}
@@ -86,50 +86,50 @@
     </div>
 
 
-    <div class="container mt-5 col-7 p-4 bg-light rounded shadow-sm">
+    <div class="container mt-5 col-11 col-md-7 p-4 bg-light rounded shadow-sm">
         <h3 class="mb-4">Responder List</h3>
 
         {{-- Search + Filter --}}
-        <div class="mb-3">
-            <form method="GET" action="{{ route('responder') }}" class="d-flex align-items-center" style="gap: 8px;">
+        <div class="mb-3 overflow-auto"">
+            <form method="GET" action="{{ route('responder') }}" class="d-flex align-items-center overflow-auto" style="gap: 8px; min-width: max-content">
                 <input
                     type="text"
                     name="search"
                     class="form-control"
-                    placeholder="Search by name or phone..."
+                    placeholder="Enter name or phone..."
                     value="{{ $search ?? '' }}"
-                    style="width: 250px;"
+                    style="width: 200px; flex-shrink: 0;"
                 >
+
+                {{-- Tombol Reset --}}
+                @if(!empty($search) || request('is_active') !== null)
+                    <a href="{{ route('responder') }}" class="btn btn-outline-secondary" title="Reset Search">
+                        <i class="fa-solid fa-rotate-left"></i>
+                    </a>
+                @endif
 
                 {{-- Tombol Search --}}
                 <button type="submit" class="btn btn-outline-primary">
                     <i class="fa-solid fa-magnifying-glass"></i> Search
                 </button>
 
-                {{-- Tombol Reset --}}
-                {{-- @if(!empty($search) || request('is_active') !== null)
-                    <a href="{{ route('responder') }}" class="btn btn-outline-secondary">
-                        <i class="fa-solid fa-rotate-left"></i> Reset
-                    </a>
-                @endif --}}
-
                 {{-- Tombol Filter isActive --}}
-                {{-- <button type="submit" name="is_active" value="{{ request('is_active') == '1' ? '0' : '1' }}"
-                    class="btn btn-outline-{{ request('is_active') == '1' ? 'danger' : 'success' }}"
-                    title="{{ request('is_active') == '1' ? 'Tampilkan Non Aktif' : 'Tampilkan Aktif' }}">
-                    @if(request('is_active') == '1')
+                <button type="submit" name="is_active" value="{{ request('is_active', '1') == '1' ? '0' : '1' }}"
+                    class="btn btn-outline-{{ request('is_active', '1') == '1' ? 'danger' : 'success' }}"
+                    title="{{ request('is_active', '1') == '1' ? 'Tampilkan Non Aktif' : 'Tampilkan Aktif' }}">
+                    @if(request('is_active', '1') == '1')
                         <i class="fa-solid fa-eye-slash"></i> Nonaktif
                     @else
                         <i class="fa-solid fa-eye"></i> Aktif
                     @endif
-                </button> --}}
+                </button>
             </form>
         </div>
 
         <div class="table-responsive">
             <table class="table table-bordered table-striped align-middle">
                 <thead class="table-secondary">
-                    <tr>
+                    <tr class="text-center align-middle">
                         <th>No</th>
                         <th>Full Name</th>
                         <th>Phone</th>
@@ -142,7 +142,7 @@
                     @foreach($responders as $index => $r)
                         <tr>
                             <td>{{ $index + 1 }}</td>
-                            <td>{{ $r->full_name }}</td>
+                            <td style="white-space: nowrap;">{{ $r->full_name }}</td>
                             <td>{{ $r->phone }}</td>
                             <td>
                                 @if($r->is_attending == 1)
@@ -154,28 +154,30 @@
                                 @endif
                             </td>
                             <td>{{ $r->number_of_guests ?? '-' }}</td>
-                            <td class="text-center">
-                                <!-- Edit Button -->
-                                <a href="{{ route('responder.edit', $r->id) }}"
-                                class="btn btn-sm btn-outline-warning me-2"
-                                title="Edit Responder">
-                                    <i class="fa-solid fa-pen-to-square"></i>
-                                </a>
+                            <td class="text-center" style="white-space: nowrap;">
+                                <div class="d-flex justify-content-center flex-nowrap align-items-center" style="gap: 6px;">
+                                    <!-- Edit Button -->
+                                    <a href="{{ route('responder.edit', $r->id) }}"
+                                    class="btn btn-sm btn-outline-warning"
+                                    title="Edit Responder">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </a>
 
-                                <!-- Copy Link Button -->
-                                <button
-                                    class="btn btn-sm btn-outline-secondary me-2"
-                                    onclick="copyLink('{{ url('/invitation/' . $r->uuid) }}')"
-                                    title="Copy Invitation Link">
-                                    <i class="fa-solid fa-copy"></i>
-                                </button>
+                                    <!-- Copy Link Button -->
+                                    <button
+                                        class="btn btn-sm btn-outline-secondary"
+                                        onclick="copyLink('{{ url('/invitation/' . $r->uuid) }}')"
+                                        title="Copy Invitation Link">
+                                        <i class="fa-solid fa-copy"></i>
+                                    </button>
 
-                                <!-- Open Invitation Button -->
-                                <a href="{{ url('/invitation/' . $r->uuid) }}"
-                                target="_blank"
-                                class="btn btn-sm btn-outline-primary">
-                                    <i class="fa-solid fa-link"></i> Open Invitation
-                                </a>
+                                    <!-- Open Invitation Button -->
+                                    <a href="{{ url('/invitation/' . $r->uuid) }}"
+                                    target="_blank"
+                                    class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1">
+                                        <i class="fa-solid fa-link"></i> Open Invitation
+                                    </a>
+                                </div>
                             </td>
                         </tr>
                     @endforeach

@@ -12,13 +12,6 @@ class ResponderController extends Controller
 {
     public function submit(Request $request)
     {
-        // $request->validate([
-        //     'full_name' => 'required|string|max:255',
-        //     'number_of_guests' => 'nullable|numeric|min:0',
-        //     'phone' => 'nullable|numeric',
-        //     'is_attending' => 'required|in:1,0',
-        // ]);
-
         $validator = Validator::make($request->all(), [
             'full_name' => 'required|string|max:255',
             'number_of_guests' => 'nullable|numeric|min:0',
@@ -115,9 +108,9 @@ class ResponderController extends Controller
             $query->where('full_name', 'like', "%{$search}%")
                 ->orWhere('phone', 'like', "%{$search}%");
         })
-        // ->when(isset($isActive), function ($query) use ($isActive) {
-        //     $query->where('is_active', $isActive);
-        // })
+        ->when(true, function ($query) use ($isActive) {
+            $query->where('is_active', $isActive ?? 1);
+        })
         ->orderBy('created_at', 'desc')
         ->get();
 

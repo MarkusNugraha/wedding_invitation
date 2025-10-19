@@ -205,10 +205,19 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px; /* jarak antar tombol dan input */
+    gap: 10px;
     width: 100%;
     max-width: 250px;
 }
+
+.table-action {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: nowrap;
+}
+
 
 @keyframes fadeIn {
     from {

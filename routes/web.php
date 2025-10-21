@@ -30,12 +30,17 @@ Route::post('/submit-rsvp', [ResponderController::class, 'submit'])->name('submi
 Route::post('/submitnew-rsvp', [ResponderController::class, 'submitnew'])->name('submitnew-rsvp');
 Route::post('/submit-wishes', [WishesController::class, 'submit'])->name('submit-wishes');
 
-// Responder Controller
 Route::middleware(['auth'])->group(function () {
+    // Responder Controller
     Route::get('/responder', [ResponderController::class, 'create'])->name('responder');
     Route::post('/addnewresponder', [ResponderController::class, 'store'])->name('addnewresponder');
     Route::get('/responder/edit/{id}', [ResponderController::class, 'edit'])->name('responder.edit');
     Route::post('/responder/update/{id}', [ResponderController::class, 'update'])->name('responder.update');
+
+    // Wishes Controller
+    Route::get('/wish', [WishesController::class, 'index'])->name('wish');
+    Route::get('/wish/edit/{id}', [WishesController::class, 'edit'])->name('wish.edit');
+    Route::post('/wish/update/{id}', [WishesController::class, 'update'])->name('wish.update');
 });
 
 // Login

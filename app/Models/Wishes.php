@@ -14,5 +14,6 @@ class Wishes extends Model
     protected $fillable = [
         'wish_name',
         'wish_message',
+        'is_active',
     ];
 }

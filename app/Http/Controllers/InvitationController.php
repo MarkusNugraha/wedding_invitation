@@ -11,7 +11,7 @@ class InvitationController extends Controller
 {
     public function index()
     {
-        $wishes = Wishes::latest()->get() ?? collect();
+        $wishes = Wishes::where('is_active', 1)->latest()->get() ?? collect();
         // responder null
         $responder = null;
         return view('invitation', compact('wishes', 'responder'));
@@ -22,7 +22,7 @@ class InvitationController extends Controller
         // Ambil data responder berdasarkan ID
         // $responder = Responder::findOrFail($uuid);
         $responder = Responder::where('uuid', $uuid)->firstOrFail();
-        $wishes = Wishes::latest()->get() ?? collect();
+        $wishes = Wishes::where('is_active', 1)->latest()->get() ?? collect();
 
         return view('invitation', compact('wishes', 'responder'));
     }

@@ -80,7 +80,6 @@ class ResponderController extends Controller
             ? $request->family_off_count
             : 2;
 
-        // Responder::create([
         $responder = Responder::create([
             'uuid' => uniqid(),
             'full_name' => $request->full_name,
@@ -91,7 +90,6 @@ class ResponderController extends Controller
             'is_active' => '1',
         ]);
 
-        // return back()->with('success', 'Thank you for your RSVP!');
         return response()->json([
             'success'   => true,
             'message'   => 'Thank you for your RSVP!',

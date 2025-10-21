@@ -217,7 +217,7 @@
                                 {{-- placeholder="Masukkan jumlah keluarga" --}}
                                 @if((isset($responder) && $responder->number_of_guests != null) ||
                                     (isset($responder) && $responder->custom_number_guest == 0))
-                                    value="{{ $responder->number_of_guests }}" {{-- readonly --}}
+                                    value="{{ $responder->number_of_guests }}" readonly
                                 @endif
                                 required
                             >

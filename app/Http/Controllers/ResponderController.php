@@ -84,6 +84,7 @@ class ResponderController extends Controller
             'uuid' => uniqid(),
             'full_name' => $request->full_name,
             'custom_number_guest' => 0,
+            'show_virtual_blessing' => 1,
             'number_of_guests' => $numberOfGuests,
             'phone' => $request->phone,
             'is_attending' => $request->is_attending,

@@ -26,6 +26,7 @@ class WishesController extends Controller
         $wish = Wishes::create([
             'wish_name'    => $request->wish_name,
             'wish_message' => $request->wish_message,
+            'is_active'    => '1',
         ]);
 
         return response()->json([
